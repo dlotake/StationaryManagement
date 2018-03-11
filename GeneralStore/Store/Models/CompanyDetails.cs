@@ -98,4 +98,23 @@ namespace Store.Models
 
 
     }
+
+    public class CompanySettings
+    {
+        private int rounding;
+
+        public int Rounding
+        {
+            get { return rounding; }
+            set { rounding = value; }
+        }
+
+        private string datetimeFotmat;
+
+        public string DateTimeFormat
+        {
+            get { return datetimeFotmat; }
+            set { datetimeFotmat = value; }
+        }
+    }
 }
