@@ -1,0 +1,90 @@
+﻿<Window x:Class="Store.Views.CustomerMaster"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Store.Models"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:converters="clr-namespace:Store.Converters"
+        xmlns:vm="clr-namespace:Store.ViewModel"
+        mc:Ignorable="d"
+        Title="CustomerMaster" Height="500.111" Width="700">
+    <Window.Resources>
+        <Style TargetType="DataGridCell" x:Key="temp" >
+            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=Content.Text}"/>
+        </Style>
+        <vm:CustomerVM x:Key="CustomerVM" />
+
+        <converters:GenderConverter x:Key="Genderconverter" />
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource CustomerVM}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="400*"/>
+            <ColumnDefinition Width="70"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Label Content="Name"  Grid.Column="0" Grid.Row="0"/>
+        <Label Content="Address" Grid.Column="0" Grid.Row="1"/>
+        <Label Content="Mobile" Grid.Column="0" Grid.Row="2"/>
+        <Label Content="Email" Grid.Column="0" Grid.Row="3"/>
+        <Label Content="Gender" Grid.Column="0" Grid.Row="4"/>
+        <Label Content="Description" Grid.Column="0" Grid.Row="5"/>
+
+        <TextBox Text="{Binding  customer.Name}"  Grid.Column="1" Grid.Row="0" Margin="0,3,0,3"/>
+        <TextBox Text="{Binding customer.Address}" Grid.Column="1" Grid.Row="1" Margin="0,3,0,3"/>
+        <TextBox Text="{Binding customer.Mobile}" Grid.Column="1" Grid.Row="2" Margin="0,3,0,3"/>
+        <TextBox Text="{Binding customer.Email}" Grid.Column="1" Grid.Row="3" Margin="0,3,0,3"/>
+        <RadioButton GroupName="Os" Content="Male" Grid.Column="1" Grid.Row="4" Margin="4,5,448,1" 
+                     IsChecked="{Binding Converter={StaticResource Genderconverter},
+            Path=customer.Gender,
+            Mode=TwoWay,
+            ConverterParameter=Male 
+            }"/>
+
+        <RadioButton GroupName="Os" Content="Female" Grid.Column="1" Grid.Row="4" Margin="55,5,382,1"                       
+                     IsChecked="{Binding Converter={StaticResource Genderconverter},
+            Path=customer.Gender,
+            Mode=TwoWay,
+            ConverterParameter=Female 
+            }"/>
+        <RadioButton  GroupName="Os" Content="Other" Grid.Column="1" Grid.Row="4" Margin="120,5,326,1"                       
+                     IsChecked="{Binding Converter={StaticResource Genderconverter},
+            Path=customer.Gender,
+            Mode=TwoWay,
+            ConverterParameter=Other 
+            }"/>
+        <TextBox Text="{Binding customer.OtherDescription}" Grid.Column="1" Grid.Row="5" Margin="0,3,0,3"/>
+        <DataGrid CanUserAddRows="False" CanUserDeleteRows="False"  AutoGenerateColumns="False" ItemsSource="{Binding customers}" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3">
+            <DataGrid.Resources>
+
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150"></DataGridTextColumn>
+              
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="150"></DataGridTextColumn>
+                <DataGridTextColumn Header="Mobile" Binding="{Binding Mobile}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="100"></DataGridTextColumn>
+                <DataGridComboBoxColumn Header="Gender" SelectedItemBinding="{Binding Gender}" ItemsSource="{Binding Enums.Genders}"  Width="50">
+                   
+                </DataGridComboBoxColumn>
+                <DataGridTextColumn Header="Description" Binding="{Binding OtherDescription}" Width="150"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" FlowDirection="RightToLeft" Orientation="Horizontal"  >
+            <Button Content="Close" Margin="5" Width="80" Command="{Binding closeCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type  Window}}}"/>
+            <Button  Content="Clear" Margin="5" Width="80" Command="{Binding clearCommand}"/>
+            <Button  Content="Save" Margin="5" Width="80" Command="{Binding saveCommand }" />
+            <Label Content="{Binding tempWarning}" />
+        </StackPanel>
+    </Grid>
+</Window>
